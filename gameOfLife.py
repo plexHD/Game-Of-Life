@@ -4,7 +4,31 @@ import os
 
 window_width = 600
 window_height = 600
+enabledGrid = 1
+steptime = 150
 path = os.path.dirname(__file__)
+
+# read settings
+
+try:
+    with open(os.path.dirname(__file__) + "\\settings.txt", "r") as settings:
+        settingsString = settings.read()
+        settingsArr = []
+        attributes = []
+        for char in settingsString:
+            attributes.append(char)
+            if char == "=":
+                attributes = []
+            if char == "\n":
+                string = ""
+                for i in attributes:
+                    string += i
+                settingsArr.append(int(string))
+        print("Successfully read settings-file: ", settingsArr)
+        enabledGrid = settingsArr[0]
+        steptime = settingsArr[1]
+except:
+    print("Settings could not be loaded or are not correctly formatted. Default values will apply.")
 
 def main():
     pygame.init()
@@ -13,7 +37,11 @@ def main():
     pygame.display.set_caption("Game of Life")
     font = pygame.font.Font(path + "\\Symtext.ttf", 10)
 
-    screen.fill((255, 255, 255))
+    if enabledGrid == 1:
+        screen.fill((255, 255, 255))
+    else:
+        screen.fill((0, 0, 0))
+
     clock = pygame.time.Clock()
     timer = 0
 
@@ -26,8 +54,6 @@ def main():
         for j in range(int(window_width / sizeFactor)):
             row.append(0)
         grid.append(row)
-
-    print(grid)
     
     running = True
     mode = 0 # 0: drawing mode, 1: simulation mode
@@ -58,7 +84,7 @@ def main():
                             if y * sizeFactor < pygame.mouse.get_pos()[1] < y * sizeFactor + sizeFactor:
                                 if grid[y][x] == 0:
                                     grid[y][x] = 1
-        elif mode == 1 and timer >= 200:
+        elif mode == 1 and timer >= steptime:
             timer = 0
             gridCopy = []
             for y in range(len(grid)):
