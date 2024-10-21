@@ -12,5 +12,7 @@ pressed again to reset the game and enter draw-mode again.
 
 To end the program press esc.
 
+If you wish to change some attributes of the simulation, you can edit the Values in "/settings.txt", to disable or change the speed of the simulation. Make sure to not change the formatting. 
+
 You may use the program for any kind of purpose, but credit would be greatly appreciated (by Moritz Ramge). 
 Have fun!
